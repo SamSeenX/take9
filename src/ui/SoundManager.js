@@ -4,9 +4,23 @@ export class SoundManager {
     this.enabled = true;
   }
 
+  async resume() {
+    if (this.ctx.state === "suspended") {
+      await this.ctx.resume();
+    }
+  }
+
   playTone(freq, type, duration) {
     if (!this.enabled) return;
-    if (this.ctx.state === "suspended") this.ctx.resume();
+
+    // Attempt resume on every play attempt if still suspended
+    if (this.ctx.state === "suspended") {
+      this.ctx
+        .resume()
+        .catch((e) => console.warn("Audio Context resume failed:", e));
+    }
+
+    if (this.ctx.state !== "running") return;
 
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
