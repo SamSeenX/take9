@@ -9,6 +9,34 @@ export class ScreenManager {
     this.typewriter = new Typewriter(30);
   }
 
+  // Helper to inject script-based ads into a container
+  injectAd(container) {
+    if (!container) return;
+    container.innerHTML = ""; // Clear placeholder
+
+    // Create config script
+    const scriptConfig = document.createElement("script");
+    scriptConfig.type = "text/javascript";
+    scriptConfig.text = `
+        atOptions = {
+            'key' : '09fff31257b4407bf1174069e75b969c',
+            'format' : 'iframe',
+            'height' : 60,
+            'width' : 468,
+            'params' : {}
+        };
+    `;
+
+    // Create invoke script
+    const scriptInvoke = document.createElement("script");
+    scriptInvoke.type = "text/javascript";
+    scriptInvoke.src =
+      "//www.highperformanceformat.com/09fff31257b4407bf1174069e75b969c/invoke.js";
+
+    container.appendChild(scriptConfig);
+    container.appendChild(scriptInvoke);
+  }
+
   async playTypeSound() {
     if (this.soundManager) this.soundManager.playType();
   }
@@ -71,20 +99,34 @@ export class ScreenManager {
     }, 100);
   }
 
-  async showQuestion(questionData, step, onAnswer) {
+  async showQuestion(questionData, step, themes, onAnswer, onHome) {
     this.app.innerHTML = `
       <div class="screen game-screen">
         <div class="header-nav">
             <button id="home-link" class="terminal-link">[ BACK TO TERMINALS ]</button>
             <div class="header">STATUS: ANALYZING [ ${step} / 9 ]</div>
         </div>
+        <div class="theme-context">
+            <div id="theme-display-title" class="theme-context-title">PROTOCOL: UNKNOWN</div>
+            <div id="theme-display-desc" class="theme-context-desc">Initializing assessment parameters...</div>
+        </div>
         <div id="question-text" class="question-text"></div>
         <div id="options-container" class="options-grid"></div>
-        <div class="ad-container" id="ad-question-bottom" style="margin-top: 2rem; min-height: 50px; font-size: 0.7rem;">
-            [SPONSOR_SLOT_SMALL]
+        <div class="ad-container" id="ad-question-bottom">
         </div>
       </div>
     `;
+
+    // Set theme context immediately (before typing)
+    const themeId = window.location.pathname.replace(/^\/|\/$/g, "") || "core";
+    const currentTheme = themes.find((t) => t.id === themeId);
+    if (currentTheme) {
+      const titleEl = this.app.querySelector("#theme-display-title");
+      const descEl = this.app.querySelector("#theme-display-desc");
+      if (titleEl)
+        titleEl.textContent = `PROTOCOL: ${currentTheme.title.toUpperCase()}`;
+      if (descEl) descEl.textContent = currentTheme.description;
+    }
 
     const qEl = this.app.querySelector("#question-text");
     await this.typewriter.type(qEl, questionData.text, () =>
@@ -111,23 +153,32 @@ export class ScreenManager {
     const homeBtn = this.app.querySelector("#home-link");
     homeBtn.addEventListener("click", () => {
       this.playClickSound();
-      window.location.href = "/";
+      if (onHome) onHome();
     });
   }
 
-  async showResult(result, themeTitle, allThemes, onSelectTheme, onRestart) {
+  async showResult(
+    result,
+    themeTitle,
+    allThemes,
+    onSelectTheme,
+    onRestart,
+    onHome,
+  ) {
     this.app.innerHTML = `
       <div class="screen result-screen">
         <div class="header-nav" style="width: 100%;">
             <button id="home-link-res" class="terminal-link">[ BACK TO TERMINALS ]</button>
             <h2>ANALYSIS COMPLETE</h2>
         </div>
+        <div class="theme-context" style="border-left-color: var(--color-accent); opacity: 0.9;">
+            <div id="theme-display-title-res" class="theme-context-title">PROTOCOL: ${themeTitle.toUpperCase()}</div>
+        </div>
         <h1 id="result-title" class="result-title"></h1>
         <div id="result-desc" class="result-desc"></div>
         
         <!-- Ad Slot: Result Page (High Visibility) -->
         <div class="ad-container" id="ad-result-bottom">
-            [SPONSOR_SLOT_01]
         </div>
 
         <div class="action-buttons" style="display:flex; flex-wrap:wrap; justify-content:center; gap: 1rem; margin-top: 2rem;">
@@ -138,9 +189,9 @@ export class ScreenManager {
             <button id="bmc-btn" style="display:none; color: var(--color-accent); border-color: var(--color-accent);">[ BUY ME A COFFEE ]</button>
         </div>
 
-        <div class="suggestions-section" style="margin-top: 3rem; border-top: 1px solid #008f11; padding-top: 1rem;">
-            <div class="terminal-text" style="color: #008f11; margin-bottom: 1rem;">OTHER AVAILABLE PROTOCOLS:</div>
-            <div id="suggestions-grid" class="options-grid" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));"></div>
+        <div class="suggestions-section" style="margin-top: 1.5rem; border-top: 1px solid #008f11; padding-top: 1rem;">
+            <div class="terminal-text" style="color: #008f11; margin-bottom: 1rem; font-size: 1rem;">OTHER AVAILABLE PROTOCOLS:</div>
+            <div id="suggestions-grid" class="suggestions-grid"></div>
         </div>
       </div>
     `;
@@ -163,7 +214,7 @@ export class ScreenManager {
     const others = allThemes
       .filter((t) => t.id !== currentThemeId)
       .sort(() => 0.5 - Math.random())
-      .slice(0, 4);
+      .slice(0, 6);
 
     others.forEach((t) => {
       const card = document.createElement("div");
@@ -182,6 +233,9 @@ export class ScreenManager {
       card.addEventListener("mouseenter", () => this.playHoverSound());
       suggestionsGrid.appendChild(card);
     });
+
+    // Inject live ad
+    this.injectAd(this.app.querySelector("#ad-result-bottom"));
 
     const btn = this.app.querySelector("#restart-btn");
     const xBtn = this.app.querySelector("#share-x-btn");
@@ -247,7 +301,7 @@ export class ScreenManager {
     const homeBtnRes = this.app.querySelector("#home-link-res");
     homeBtnRes.addEventListener("click", () => {
       this.playClickSound();
-      window.location.href = "/";
+      if (onHome) onHome();
     });
 
     // BMC Logic
