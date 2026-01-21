@@ -5,11 +5,15 @@ export class SoundManager {
   }
 
   async resume() {
-    if (!this.ctx) {
-      this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-    if (this.ctx.state === "suspended") {
-      await this.ctx.resume();
+    try {
+      if (!this.ctx) {
+        this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (this.ctx.state === "suspended") {
+        await this.ctx.resume();
+      }
+    } catch (e) {
+      // Silently fail - browser will block until gesture
     }
   }
 
