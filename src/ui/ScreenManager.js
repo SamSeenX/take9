@@ -167,9 +167,9 @@ export class ScreenManager {
             <button id="bmc-btn" style="display:none; color: var(--color-accent); border-color: var(--color-accent);">[ BUY ME A COFFEE ]</button>
         </div>
 
-        <div class="suggestions-section" style="margin-top: 3rem; border-top: 1px solid #008f11; padding-top: 1rem;">
-            <div class="terminal-text" style="color: #008f11; margin-bottom: 1rem;">OTHER AVAILABLE PROTOCOLS:</div>
-            <div id="suggestions-grid" class="options-grid" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));"></div>
+        <div class="suggestions-section" style="margin-top: 1.5rem; border-top: 1px solid #008f11; padding-top: 1rem;">
+            <div class="terminal-text" style="color: #008f11; margin-bottom: 1rem; font-size: 1rem;">OTHER AVAILABLE PROTOCOLS:</div>
+            <div id="suggestions-grid" class="suggestions-grid"></div>
         </div>
       </div>
     `;
