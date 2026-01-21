@@ -27,7 +27,7 @@ body {
   flex-direction: column;
   overflow-x: hidden;
   position: relative;
-  text-shadow: 0 0 5px var(--color-secondary), 0 0 10px var(--color-secondary);
+  text-shadow: 0 0 2px var(--color-secondary);
   font-size: 1.2rem;
 }
 
@@ -105,9 +105,22 @@ body {
 .theme-context {
   width: 100%;
   text-align: left;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   border-left: 3px solid var(--color-primary);
   padding-left: 1rem;
+}
+
+.theme-context-title {
+  font-size: 0.9rem;
+  color: var(--color-secondary);
+  letter-spacing: 2px;
+  text-shadow: 0 0 8px var(--color-primary); /* Glow only on header */
+}
+
+.theme-context-desc {
+  font-size: 0.8rem;
+  opacity: 0.7;
+  text-shadow: none; /* Keep description sharp */
 }
 
 .question-text {
@@ -301,21 +314,45 @@ button:hover {
 }
 
 @keyframes glitch-anim-1 {
-  0% { clip: rect(30px, 9999px, 10px, 0); }
-  20% { clip: rect(80px, 9999px, 80px, 0); }
-  40% { clip: rect(20px, 9999px, 100px, 0); }
-  60% { clip: rect(60px, 9999px, 30px, 0); }
-  80% { clip: rect(10px, 9999px, 140px, 0); }
-  100% { clip: rect(120px, 9999px, 50px, 0); }
+  0% {
+    clip: rect(30px, 9999px, 10px, 0);
+  }
+  20% {
+    clip: rect(80px, 9999px, 80px, 0);
+  }
+  40% {
+    clip: rect(20px, 9999px, 100px, 0);
+  }
+  60% {
+    clip: rect(60px, 9999px, 30px, 0);
+  }
+  80% {
+    clip: rect(10px, 9999px, 140px, 0);
+  }
+  100% {
+    clip: rect(120px, 9999px, 50px, 0);
+  }
 }
 
 @keyframes glitch-anim-2 {
-  0% { clip: rect(120px, 9999px, 50px, 0); }
-  20% { clip: rect(30px, 9999px, 10px, 0); }
-  40% { clip: rect(90px, 9999px, 50px, 0); }
-  60% { clip: rect(10px, 9999px, 10px, 0); }
-  80% { clip: rect(140px, 9999px, 90px, 0); }
-  100% { clip: rect(20px, 9999px, 30px, 0); }
+  0% {
+    clip: rect(120px, 9999px, 50px, 0);
+  }
+  20% {
+    clip: rect(30px, 9999px, 10px, 0);
+  }
+  40% {
+    clip: rect(90px, 9999px, 50px, 0);
+  }
+  60% {
+    clip: rect(10px, 9999px, 10px, 0);
+  }
+  80% {
+    clip: rect(140px, 9999px, 90px, 0);
+  }
+  100% {
+    clip: rect(20px, 9999px, 30px, 0);
+  }
 }
 
 /* CRT Overlays */
@@ -329,9 +366,16 @@ body::after {
   right: 0;
   background:
     linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
-    linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    linear-gradient(
+      90deg,
+      rgba(255, 0, 0, 0.06),
+      rgba(0, 255, 0, 0.02),
+      rgba(0, 0, 255, 0.06)
+    );
   z-index: 2;
-  background-size: 100% 2px, 3px 100%;
+  background-size:
+    100% 2px,
+    3px 100%;
   pointer-events: none;
 }
 
@@ -351,12 +395,24 @@ body::before {
 }
 
 @keyframes flicker {
-  0% { opacity: 0.97; }
-  5% { opacity: 0.95; }
-  10% { opacity: 0.9; }
-  15% { opacity: 0.95; }
-  20% { opacity: 0.99; }
-  100% { opacity: 0.97; }
+  0% {
+    opacity: 0.97;
+  }
+  5% {
+    opacity: 0.95;
+  }
+  10% {
+    opacity: 0.9;
+  }
+  15% {
+    opacity: 0.95;
+  }
+  20% {
+    opacity: 0.99;
+  }
+  100% {
+    opacity: 0.97;
+  }
 }
 
 /* Responsive Theme Selector */

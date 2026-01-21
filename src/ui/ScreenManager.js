@@ -99,20 +99,20 @@ export class ScreenManager {
     }, 100);
   }
 
-  async showQuestion(questionData, step, onAnswer) {
+  async showQuestion(questionData, step, themes, onAnswer) {
     this.app.innerHTML = `
       <div class="screen game-screen">
         <div class="header-nav">
             <button id="home-link" class="terminal-link">[ BACK TO TERMINALS ]</button>
             <div class="header">STATUS: ANALYZING [ ${step} / 9 ]</div>
         </div>
-        <div class="theme-context" style="width: 100%; text-align: left; margin-bottom: 1rem; border-left: 3px solid var(--color-primary); padding-left: 1rem;">
-            <div id="theme-display-title" style="font-size: 0.9rem; color: var(--color-secondary); letter-spacing: 2px;">PROTOCOL: UNKNOWN</div>
-            <div id="theme-display-desc" style="font-size: 0.75rem; opacity: 0.6;">Initializing assessment parameters...</div>
+        <div class="theme-context">
+            <div id="theme-display-title" class="theme-context-title">PROTOCOL: UNKNOWN</div>
+            <div id="theme-display-desc" class="theme-context-desc">Initializing assessment parameters...</div>
         </div>
         <div id="question-text" class="question-text"></div>
         <div id="options-container" class="options-grid"></div>
-        <div class="ad-container" id="ad-question-bottom" style="margin-top: 2rem; min-height: 50px; font-size: 0.7rem;">
+        <div class="ad-container" id="ad-question-bottom">
         </div>
       </div>
     `;
@@ -150,10 +150,14 @@ export class ScreenManager {
     const currentTheme = themes.find((t) => t.id === themeId);
     if (currentTheme) {
       this.app.querySelector("#theme-display-title").textContent =
-        `PROTOCOL: ${currentTheme.title}`;
+        `PROTOCOL: ${currentTheme.title.toUpperCase()}`;
       this.app.querySelector("#theme-display-desc").textContent =
         currentTheme.description;
     }
+
+    // Inject live ad
+    this.injectAd(this.app.querySelector("#ad-question-bottom"));
+  }
 
     // Inject live ad
     this.injectAd(this.app.querySelector("#ad-question-bottom"));
@@ -166,8 +170,8 @@ export class ScreenManager {
             <button id="home-link-res" class="terminal-link">[ BACK TO TERMINALS ]</button>
             <h2>ANALYSIS COMPLETE</h2>
         </div>
-        <div class="theme-context" style="width: 100%; text-align: left; margin: 1rem 0; border-left: 3px solid var(--color-accent); padding-left: 1rem; opacity: 0.8;">
-            <div id="theme-display-title-res" style="font-size: 0.9rem; color: var(--color-secondary); letter-spacing: 2px;">PROTOCOL: ${themeTitle}</div>
+        <div class="theme-context" style="border-left-color: var(--color-accent); opacity: 0.9;">
+            <div id="theme-display-title-res" class="theme-context-title">PROTOCOL: ${themeTitle.toUpperCase()}</div>
         </div>
         <h1 id="result-title" class="result-title"></h1>
         <div id="result-desc" class="result-desc"></div>

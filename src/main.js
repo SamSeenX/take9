@@ -69,7 +69,7 @@ const handleThemeSelect = async (theme) => {
 
     // Init Game with chosen theme data
     const firstQuestion = game.init(themeData, theme.title);
-    ui.showQuestion(firstQuestion, game.currentStep, handleAnswer);
+    ui.showQuestion(firstQuestion, game.currentStep, themes, handleAnswer);
   } catch (error) {
     console.error("Failed to load theme:", error);
     // Could show error screen here
@@ -90,7 +90,7 @@ const handleAnswer = (index) => {
       initApp,
     );
   } else {
-    ui.showQuestion(result.question, game.currentStep, handleAnswer);
+    ui.showQuestion(result.question, game.currentStep, themes, handleAnswer);
   }
 };
 
