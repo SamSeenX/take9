@@ -92,7 +92,7 @@ body {
 
 .terminal-link:hover {
   opacity: 1;
-  color: var(--color-primary);
+  color: var(--color-bg);
 }
 
 .header {
