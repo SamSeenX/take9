@@ -9,6 +9,15 @@ const game = new GameEngine();
 const soundManager = new SoundManager();
 const ui = new ScreenManager(app, soundManager);
 
+// Global interaction listener to unlock AudioContext
+const unlockAudio = async () => {
+  await soundManager.resume();
+  window.removeEventListener("click", unlockAudio);
+  window.removeEventListener("keydown", unlockAudio);
+};
+window.addEventListener("click", unlockAudio);
+window.addEventListener("keydown", unlockAudio);
+
 // Helper to update SEO Meta Tags
 const updateMetadata = (theme) => {
   const baseTitle = "Take 9 - Personality Test";
@@ -54,10 +63,8 @@ const handleGoHome = () => {
 };
 
 const handleThemeSelect = async (theme) => {
-  // Ensure Audio Context is resumed (first interaction usually)
-  if (soundManager.ctx.state === "suspended") {
-    soundManager.ctx.resume();
-  }
+  // Ensure Audio Context is resumed (user gesture)
+  await soundManager.resume();
 
   // Show Loading
   ui.showLoading();
