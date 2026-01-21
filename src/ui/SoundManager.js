@@ -1,26 +1,24 @@
 export class SoundManager {
   constructor() {
-    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    this.ctx = null;
     this.enabled = true;
   }
 
   async resume() {
-    if (this.ctx.state === "suspended") {
-      await this.ctx.resume();
+    try {
+      if (!this.ctx) {
+        this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (this.ctx.state === "suspended") {
+        await this.ctx.resume();
+      }
+    } catch (e) {
+      // Silently fail - browser will block until gesture
     }
   }
 
   playTone(freq, type, duration) {
-    if (!this.enabled) return;
-
-    // Attempt resume on every play attempt if still suspended
-    if (this.ctx.state === "suspended") {
-      this.ctx
-        .resume()
-        .catch((e) => console.warn("Audio Context resume failed:", e));
-    }
-
-    if (this.ctx.state !== "running") return;
+    if (!this.enabled || !this.ctx || this.ctx.state !== "running") return;
 
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
