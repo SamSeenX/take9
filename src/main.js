@@ -46,7 +46,7 @@ const initApp = () => {
   const themeByPath = themes.find((t) => t.id === path);
 
   if (themeByPath) {
-    handleThemeSelect(themeByPath);
+    handleThemeSelect(themeByPath, true);
   } else {
     updateMetadata(null); // Reset to default
     // Show Theme Selector
@@ -62,9 +62,11 @@ const handleGoHome = () => {
   ui.showStart(themes, handleThemeSelect);
 };
 
-const handleThemeSelect = async (theme) => {
-  // Ensure Audio Context is resumed (user gesture)
-  await soundManager.resume();
+const handleThemeSelect = async (theme, isInitial = false) => {
+  // Ensure Audio Context is resumed (user gesture) - skip on initial load to avoid warning
+  if (!isInitial) {
+    await soundManager.resume();
+  }
 
   // Show Loading
   ui.showLoading();
