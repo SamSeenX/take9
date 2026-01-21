@@ -1,10 +1,13 @@
 export class SoundManager {
   constructor() {
-    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    this.ctx = null;
     this.enabled = true;
   }
 
   async resume() {
+    if (!this.ctx) {
+      this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    }
     if (this.ctx.state === "suspended") {
       await this.ctx.resume();
     }
@@ -12,6 +15,10 @@ export class SoundManager {
 
   playTone(freq, type, duration) {
     if (!this.enabled) return;
+
+    if (!this.ctx) {
+      this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    }
 
     // Attempt resume on every play attempt if still suspended
     if (this.ctx.state === "suspended") {
