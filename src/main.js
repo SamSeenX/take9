@@ -9,6 +9,28 @@ const game = new GameEngine();
 const soundManager = new SoundManager();
 const ui = new ScreenManager(app, soundManager);
 
+// Helper to update SEO Meta Tags
+const updateMetadata = (theme) => {
+  const baseTitle = "Take 9 - Personality Test";
+  const themeTitle = theme ? `Take 9: ${theme.title}` : baseTitle;
+  const themeDesc = theme
+    ? theme.description
+    : "Discover your digital soul in 9 questions. A retro-futuristic personality assessment.";
+
+  document.title = themeTitle;
+
+  // Update standard description
+  const metaDesc = document.querySelector('meta[name="description"]');
+  if (metaDesc) metaDesc.setAttribute("content", themeDesc);
+
+  // Update OG meta tags
+  const ogTitle = document.querySelector('meta[property="og:title"]');
+  if (ogTitle) ogTitle.setAttribute("content", themeTitle);
+
+  const ogDesc = document.querySelector('meta[property="og:description"]');
+  if (ogDesc) ogDesc.setAttribute("content", themeDesc);
+};
+
 // Initializer
 const initApp = () => {
   const path = window.location.pathname.replace(/^\/|\/$/g, ""); // strip slashes
@@ -17,6 +39,7 @@ const initApp = () => {
   if (themeByPath) {
     handleThemeSelect(themeByPath);
   } else {
+    updateMetadata(null); // Reset to default
     // Show Theme Selector
     ui.showStart(themes, handleThemeSelect);
   }
@@ -30,6 +53,9 @@ const handleThemeSelect = async (theme) => {
 
   // Show Loading
   ui.showLoading();
+
+  // Update Metadata
+  updateMetadata(theme);
 
   // Update URL if needed (for navigation or manual selection)
   if (window.location.pathname !== `/${theme.id}`) {
