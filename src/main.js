@@ -9,14 +9,16 @@ const game = new GameEngine();
 const soundManager = new SoundManager();
 const ui = new ScreenManager(app, soundManager);
 
-// Global interaction listener to unlock AudioContext
-const unlockAudio = async () => {
-  await soundManager.resume();
-  window.removeEventListener("click", unlockAudio);
-  window.removeEventListener("keydown", unlockAudio);
-};
-window.addEventListener("click", unlockAudio);
-window.addEventListener("keydown", unlockAudio);
+// Defer unlock listener to avoid "dirty" gestures on page load
+setTimeout(() => {
+  const unlockAudio = async () => {
+    await soundManager.resume();
+    window.removeEventListener("pointerdown", unlockAudio);
+    window.removeEventListener("keydown", unlockAudio);
+  };
+  window.addEventListener("pointerdown", unlockAudio);
+  window.addEventListener("keydown", unlockAudio);
+}, 1000);
 
 // Helper to update SEO Meta Tags
 const updateMetadata = (theme) => {
