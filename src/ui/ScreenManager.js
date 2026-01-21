@@ -109,7 +109,6 @@ export class ScreenManager {
         <div id="question-text" class="question-text"></div>
         <div id="options-container" class="options-grid"></div>
         <div class="ad-container" id="ad-question-bottom" style="margin-top: 2rem; min-height: 50px; font-size: 0.7rem;">
-            [SPONSOR_SLOT_SMALL]
         </div>
       </div>
     `;
@@ -158,7 +157,6 @@ export class ScreenManager {
         
         <!-- Ad Slot: Result Page (High Visibility) -->
         <div class="ad-container" id="ad-result-bottom">
-            [SPONSOR_SLOT_01]
         </div>
 
         <div class="action-buttons" style="display:flex; flex-wrap:wrap; justify-content:center; gap: 1rem; margin-top: 2rem;">
