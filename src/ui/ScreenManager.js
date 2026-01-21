@@ -9,6 +9,34 @@ export class ScreenManager {
     this.typewriter = new Typewriter(30);
   }
 
+  // Helper to inject script-based ads into a container
+  injectAd(container) {
+    if (!container) return;
+    container.innerHTML = ""; // Clear placeholder
+
+    // Create config script
+    const scriptConfig = document.createElement("script");
+    scriptConfig.type = "text/javascript";
+    scriptConfig.text = `
+        atOptions = {
+            'key' : '09fff31257b4407bf1174069e75b969c',
+            'format' : 'iframe',
+            'height' : 60,
+            'width' : 468,
+            'params' : {}
+        };
+    `;
+
+    // Create invoke script
+    const scriptInvoke = document.createElement("script");
+    scriptInvoke.type = "text/javascript";
+    scriptInvoke.src =
+      "//www.highperformanceformat.com/09fff31257b4407bf1174069e75b969c/invoke.js";
+
+    container.appendChild(scriptConfig);
+    container.appendChild(scriptInvoke);
+  }
+
   async playTypeSound() {
     if (this.soundManager) this.soundManager.playType();
   }
@@ -113,6 +141,9 @@ export class ScreenManager {
       this.playClickSound();
       window.location.href = "/";
     });
+
+    // Inject live ad
+    this.injectAd(this.app.querySelector("#ad-question-bottom"));
   }
 
   async showResult(result, themeTitle, allThemes, onSelectTheme, onRestart) {
@@ -182,6 +213,9 @@ export class ScreenManager {
       card.addEventListener("mouseenter", () => this.playHoverSound());
       suggestionsGrid.appendChild(card);
     });
+
+    // Inject live ad
+    this.injectAd(this.app.querySelector("#ad-result-bottom"));
 
     const btn = this.app.querySelector("#restart-btn");
     const xBtn = this.app.querySelector("#share-x-btn");
