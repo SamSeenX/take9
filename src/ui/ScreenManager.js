@@ -117,6 +117,17 @@ export class ScreenManager {
       </div>
     `;
 
+    // Set theme context immediately (before typing)
+    const themeId = window.location.pathname.replace(/^\/|\/$/g, "") || "core";
+    const currentTheme = themes.find((t) => t.id === themeId);
+    if (currentTheme) {
+      const titleEl = this.app.querySelector("#theme-display-title");
+      const descEl = this.app.querySelector("#theme-display-desc");
+      if (titleEl)
+        titleEl.textContent = `PROTOCOL: ${currentTheme.title.toUpperCase()}`;
+      if (descEl) descEl.textContent = currentTheme.description;
+    }
+
     const qEl = this.app.querySelector("#question-text");
     await this.typewriter.type(qEl, questionData.text, () =>
       this.playTypeSound(),
@@ -144,16 +155,6 @@ export class ScreenManager {
       this.playClickSound();
       if (onHome) onHome();
     });
-
-    // Set theme context if available
-    const themeId = window.location.pathname.replace(/^\/|\/$/g, "");
-    const currentTheme = themes.find((t) => t.id === themeId);
-    if (currentTheme) {
-      this.app.querySelector("#theme-display-title").textContent =
-        `PROTOCOL: ${currentTheme.title.toUpperCase()}`;
-      this.app.querySelector("#theme-display-desc").textContent =
-        currentTheme.description;
-    }
   }
 
   async showResult(
