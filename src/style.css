@@ -1,0 +1,313 @@
+/* Body/Root Styles handled in index.html for Critical Path */
+:root {
+  --scanline-color: rgba(0, 0, 0, 0.5);
+  --flicker-duration: 0.15s;
+}
+
+body {
+  /* Base styles handled in Critical CSS, keeping layout relevant props just in case */
+  text-shadow:
+    0 0 5px var(--color-secondary),
+    0 0 10px var(--color-secondary);
+  font-size: 1.2rem;
+}
+
+#app {
+  width: 100%;
+  max-width: 800px;
+  height: 90vh;
+  position: relative;
+  z-index: 1;
+  padding: 2rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Common Layouts */
+.screen {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  height: 100%;
+  justify-content: center;
+}
+
+.game-screen {
+  justify-content: flex-start;
+  padding-top: 2rem;
+}
+
+.header {
+  border-bottom: 2px solid var(--color-secondary);
+  width: 100%;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  text-align: right;
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+.question-text {
+  font-size: 1.8rem;
+  line-height: 1.4;
+  margin-bottom: 2rem;
+  min-height: 100px;
+  text-align: left;
+  width: 100%;
+}
+
+.terminal-text {
+  font-size: 1.5rem;
+  white-space: pre-wrap;
+  line-height: 1.5;
+}
+
+.result-title {
+  font-size: 3rem;
+  color: var(--color-accent);
+}
+
+.result-desc {
+  font-size: 1.4rem;
+  line-height: 1.6;
+  max-width: 600px;
+}
+
+/* Options Grid */
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  width: 100%;
+  max-width: 600px;
+}
+
+@media (min-width: 600px) {
+  .options-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Buttons */
+.option-btn,
+button {
+  background: rgba(0, 50, 0, 0.2);
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  font-family: var(--font-main);
+  font-size: 1.4rem;
+  padding: 1rem;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.option-btn:hover,
+button:hover {
+  background: var(--color-primary);
+  color: var(--color-bg);
+  box-shadow: 0 0 15px var(--color-primary);
+  transform: translateY(-2px);
+}
+
+.option-btn:active {
+  transform: translateY(1px);
+}
+
+/* Glitch Effect */
+.glitch {
+  font-size: 4rem;
+  position: relative;
+  color: var(--color-primary);
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch::before {
+  left: 2px;
+  text-shadow: -1px 0 red;
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim-1 5s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+  left: -2px;
+  text-shadow: -1px 0 blue;
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim-2 5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim-1 {
+  0% {
+    clip: rect(30px, 9999px, 10px, 0);
+  }
+  20% {
+    clip: rect(80px, 9999px, 80px, 0);
+  }
+  40% {
+    clip: rect(20px, 9999px, 100px, 0);
+  }
+  60% {
+    clip: rect(60px, 9999px, 30px, 0);
+  }
+  80% {
+    clip: rect(10px, 9999px, 140px, 0);
+  }
+  100% {
+    clip: rect(120px, 9999px, 50px, 0);
+  }
+}
+
+@keyframes glitch-anim-2 {
+  0% {
+    clip: rect(120px, 9999px, 50px, 0);
+  }
+  20% {
+    clip: rect(30px, 9999px, 10px, 0);
+  }
+  40% {
+    clip: rect(90px, 9999px, 50px, 0);
+  }
+  60% {
+    clip: rect(10px, 9999px, 10px, 0);
+  }
+  80% {
+    clip: rect(140px, 9999px, 90px, 0);
+  }
+  100% {
+    clip: rect(20px, 9999px, 30px, 0);
+  }
+}
+
+/* Screen CRT Overlays */
+body::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background:
+    linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+    linear-gradient(
+      90deg,
+      rgba(255, 0, 0, 0.06),
+      rgba(0, 255, 0, 0.02),
+      rgba(0, 0, 255, 0.06)
+    );
+  z-index: 2;
+  background-size:
+    100% 2px,
+    3px 100%;
+  pointer-events: none;
+}
+
+body::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(18, 16, 16, 0.1);
+  opacity: 0;
+  z-index: 2;
+  pointer-events: none;
+  animation: flicker var(--flicker-duration) infinite;
+}
+
+@keyframes flicker {
+  0% {
+    opacity: 0.97;
+  }
+  5% {
+    opacity: 0.95;
+  }
+  10% {
+    opacity: 0.9;
+  }
+  15% {
+    opacity: 0.95;
+  }
+  20% {
+    opacity: 0.99;
+  }
+  100% {
+    opacity: 0.97;
+  }
+}
+
+/* Theme Selector */
+.theme-selector-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 800px;
+  margin-top: 2rem;
+}
+
+@media (min-width: 700px) {
+  .theme-selector-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.theme-card {
+  background: rgba(0, 50, 0, 0.3);
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary);
+  padding: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 150px;
+}
+
+.theme-card:hover {
+  background: var(--color-primary);
+  color: var(--color-bg);
+  box-shadow: 0 0 15px var(--color-primary);
+  transform: scale(1.05);
+}
+
+.theme-card h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.8rem;
+}
+
+.theme-card p {
+  margin: 0;
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+/* Loading Screen */
+.loading-screen {
+  justify-content: center;
+}
+
+.loading-screen h2 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}

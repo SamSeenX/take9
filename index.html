@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Take 9 - Personality Test</title>
+    <meta
+      name="description"
+      content="Discover your digital soul in 9 questions. A retro-futuristic personality assessment."
+    />
+
+    <!-- Open Graph / Meta -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://take9.pages.dev/" />
+    <meta property="og:title" content="Take 9 - Personality Test" />
+    <meta
+      property="og:description"
+      content="Discover your digital soul in 9 questions. A retro-futuristic personality assessment."
+    />
+    <meta property="og:image" content="https://take9.pages.dev/og-image.jpg" />
+    <meta property="twitter:card" content="summary_large_image" />
+
+    <!-- Optimization: Preconnect & Preload -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=VT323&display=swap"
+      as="style"
+      onload="
+        this.onload = null;
+        this.rel = 'stylesheet';
+      "
+    />
+    <noscript
+      ><link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=VT323&display=swap"
+    /></noscript>
+
+    <!-- Critical CSS Inlined -->
+    <style>
+      :root {
+        --color-bg: #0d0d0d;
+        --color-primary: #33ff00;
+        --color-secondary: #008f11;
+        --color-accent: #ffb000;
+        --color-text: #33ff00;
+        --font-main: "VT323", monospace;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: var(--color-bg);
+        color: var(--color-text);
+        font-family: var(--font-main);
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+      }
+      #app {
+        padding: 2rem;
+        max-width: 800px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
