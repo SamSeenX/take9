@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Take 9 - Personality Test</title>
     <meta
@@ -12,13 +12,13 @@
 
     <!-- Open Graph / Meta -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://take9.pages.dev/" />
+    <meta property="og:url" content="https://t9.samseen.dev/" />
     <meta property="og:title" content="Take 9 - Personality Test" />
     <meta
       property="og:description"
       content="Discover your digital soul in 9 questions. A retro-futuristic personality assessment."
     />
-    <meta property="og:image" content="https://take9.pages.dev/og-image.jpg" />
+    <meta property="og:image" content="https://t9.samseen.dev/og-image.jpg" />
     <meta property="twitter:card" content="summary_large_image" />
 
     <!-- Optimization: Preconnect & Preload -->
@@ -55,12 +55,13 @@
         background-color: var(--color-bg);
         color: var(--color-text);
         font-family: var(--font-main);
-        height: 100vh;
-        width: 100vw;
+        min-height: 100vh; /* Allow growth */
+        width: 100%;
         display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
+        flex-direction: column;
+        overflow-x: hidden;
+        /* create context for absolute positioning if needed, but rely on flow */
+        position: relative;
       }
       #app {
         padding: 2rem;
@@ -68,10 +69,92 @@
         width: 100%;
         box-sizing: border-box;
       }
+
+      /* Ad Slot Styles */
+      .ad-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin: 2rem 0;
+        min-height: 90px;
+        background: rgba(0, 20, 0, 0.3);
+        border: 1px dashed var(--color-secondary);
+        align-items: center;
+        color: var(--color-secondary);
+        font-size: 0.8rem;
+        opacity: 0.5;
+      }
+
+      /* SEO Footer */
+      #seo-footer {
+        position: relative;
+        width: 100%;
+        background: #000; /* Solid opaque background */
+        color: #118811; /* High contrast green */
+        font-family: sans-serif;
+        font-size: 11px;
+        padding: 40px 20px;
+        border-top: 1px solid #113311;
+        z-index: 50;
+        text-align: center;
+        line-height: 1.6;
+        opacity: 1; /* Fully visible */
+        margin-top: auto;
+        box-sizing: border-box; /* padding included in width */
+        text-shadow: none !important; /* Fix blurriness */
+      }
+      #seo-footer h2 {
+        font-size: 12px;
+        margin-bottom: 5px;
+        color: #006600;
+      }
+      #seo-footer p {
+        max-width: 800px;
+        margin: 0 auto 10px auto;
+      }
+
+      /* Ensure game sits above footer */
+      #app {
+        z-index: 10;
+        position: relative;
+        padding-bottom: 100px;
+      }
     </style>
   </head>
   <body>
     <div id="app"></div>
+
+    <!-- SEO Footer for AdSense Approval & Indexing -->
+    <footer id="seo-footer">
+      <h2>About Take 9 Personality Assessment</h2>
+      <p>
+        Take 9 is a free, interactive personality test designed to explore
+        psychological archetypes through abstract narrative scenarios. Unlike
+        traditional Myers-Briggs (MBTI) or Enneagram tests, Take 9 uses an
+        experiential "choose your own adventure" format to determine your
+        alignment.
+      </p>
+      <p>
+        <strong>Available Modules:</strong>
+        The Void (Cyberpunk Identity), The Castle (Hogwarts House Sorting), The
+        Kingdom (Game of Thrones Archetypes), The Galaxy (Star Wars
+        Personality), The Wild (Spirit Animal), The Villain (Antagonist
+        Alignment), The Aesthetic (Core/Vibe Check), The Alignment (D&D Moral
+        Compass), and The Era (Retro Tech Nostalgia).
+      </p>
+      <p>
+        &copy; 2026 Take 9. All rights reserved. |
+        <a href="/privacy.html" style="color: #33cc33; text-decoration: none"
+          >Privacy Policy</a
+        >
+        |
+        <a href="/terms.html" style="color: #33cc33; text-decoration: none"
+          >Terms of Service</a
+        |
+        <a href="https://buymeacoffee.com/samseen" target="_blank" style="color: #ffb000; text-decoration: none; font-weight: bold;">Support the Creator (Buy Me a Coffee)</a>
+      </p>
+    </footer>
+
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

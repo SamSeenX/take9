@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Privacy Policy - Take 9</title>
+    <!-- Preload Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=VT323&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --color-bg: #0d0d0d;
+        --color-primary: #33ff00;
+        --color-secondary: #008f11;
+        --font-main: "VT323", monospace;
+      }
+      body {
+        background-color: var(--color-bg);
+        color: var(--color-primary);
+        font-family: var(--font-main);
+        line-height: 1.6;
+        padding: 2rem;
+        max-width: 800px;
+        margin: 0 auto;
+        font-size: 1.2rem;
+        text-shadow: 0 0 5px var(--color-secondary);
+      }
+      h1 {
+        border-bottom: 2px solid var(--color-secondary);
+        padding-bottom: 0.5rem;
+        text-transform: uppercase;
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+      }
+      h2 {
+        margin-top: 2rem;
+        color: var(--color-primary);
+        text-transform: uppercase;
+        font-size: 1.8rem;
+      }
+      p {
+        margin-bottom: 1rem;
+        opacity: 0.9;
+      }
+      a {
+        color: var(--color-primary);
+        text-decoration: underline;
+      }
+      a:hover {
+        background: var(--color-primary);
+        color: var(--color-bg);
+        text-decoration: none;
+      }
+
+      /* Scanline Overlay */
+      body::after {
+        content: " ";
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background:
+          linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+          linear-gradient(
+            90deg,
+            rgba(255, 0, 0, 0.06),
+            rgba(0, 255, 0, 0.02),
+            rgba(0, 0, 255, 0.06)
+          );
+        z-index: 2;
+        background-size:
+          100% 2px,
+          3px 100%;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Privacy Policy</h1>
+    <p>Last updated: January 21, 2026</p>
+
+    <h2>1. Introduction</h2>
+    <p>
+      Welcome to Take 9. We respect your privacy and represent that we do not
+      collect personal data from our users aside from standard analytics and
+      advertising cookies.
+    </p>
+
+    <h2>2. Data Collection</h2>
+    <p>
+      We do not require account creation or storage of personal information
+      (PII). All quiz results are processed locally in your browser.
+    </p>
+
+    <h2>3. Cookies and Advertising</h2>
+    <p>
+      We use third-party vendors, including Google, which use cookies to serve
+      ads based on a user's prior visits to our website or other websites.
+      Google's use of advertising cookies enables it and its partners to serve
+      ads to your users based on their visit to your sites and/or other sites on
+      the Internet.
+    </p>
+    <p>
+      Users may opt out of personalized advertising by visiting
+      <a href="https://www.google.com/settings/ads" target="_blank"
+        >Google Ads Settings</a
+      >.
+    </p>
+
+    <h2>4. Analytics</h2>
+    <p>
+      We may use anonymous analytics tools to track website traffic and
+      performance. No personally identifiable information is attached to this
+      data.
+    </p>
+
+    <h2>5. Contact</h2>
+    <p>
+      For any questions regarding this policy, please contact us via GitHub.
+    </p>
+
+    <p style="margin-top: 3rem"><a href="/">&lt; RETURN TO TERMINAL</a></p>
+  </body>
+</html>

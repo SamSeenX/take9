@@ -6,10 +6,12 @@ export class GameEngine {
     this.history = []; // Stores traits collected
     this.started = false;
     this.data = null; // Will hold the current theme data
+    this.currentThemeTitle = "";
   }
 
-  init(themeData) {
+  init(themeData, themeTitle) {
     this.data = themeData;
+    this.currentThemeTitle = themeTitle || "Unknown Protocol";
     // Pick a random start node
     const starts = this.data.startNodes;
     this.currentNodeId = starts[Math.floor(Math.random() * starts.length)];
@@ -46,7 +48,11 @@ export class GameEngine {
 
     // Check end condition
     if (this.currentStep > this.maxSteps || this.currentNodeId === "end") {
-      return { completed: true, result: this.calculateResult() };
+      return {
+        completed: true,
+        result: this.calculateResult(),
+        themeTitle: this.currentThemeTitle,
+      };
     }
 
     return { completed: false, question: this.getCurrentQuestion() };

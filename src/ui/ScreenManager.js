@@ -1,5 +1,6 @@
 import { Typewriter } from "./Typewriter";
 import { ThemeSelector } from "./ThemeSelector";
+import { CertificateGenerator } from "./CertificateGenerator";
 
 export class ScreenManager {
   constructor(appElement, soundManager) {
@@ -73,9 +74,15 @@ export class ScreenManager {
   async showQuestion(questionData, step, onAnswer) {
     this.app.innerHTML = `
       <div class="screen game-screen">
-        <div class="header">STATUS: ANALYZING [ ${step} / 9 ]</div>
+        <div class="header-nav">
+            <button id="home-link" class="terminal-link">[ BACK TO TERMINALS ]</button>
+            <div class="header">STATUS: ANALYZING [ ${step} / 9 ]</div>
+        </div>
         <div id="question-text" class="question-text"></div>
         <div id="options-container" class="options-grid"></div>
+        <div class="ad-container" id="ad-question-bottom" style="margin-top: 2rem; min-height: 50px; font-size: 0.7rem;">
+            [SPONSOR_SLOT_SMALL]
+        </div>
       </div>
     `;
 
@@ -100,15 +107,41 @@ export class ScreenManager {
         this.playTypeSound(); // Sound on button appear
       }, index * 200);
     });
+
+    const homeBtn = this.app.querySelector("#home-link");
+    homeBtn.addEventListener("click", () => {
+      this.playClickSound();
+      window.location.href = "/";
+    });
   }
 
-  async showResult(result, onRestart) {
+  async showResult(result, themeTitle, allThemes, onSelectTheme, onRestart) {
     this.app.innerHTML = `
       <div class="screen result-screen">
-        <h2>ANALYSIS COMPLETE</h2>
+        <div class="header-nav" style="width: 100%;">
+            <button id="home-link-res" class="terminal-link">[ BACK TO TERMINALS ]</button>
+            <h2>ANALYSIS COMPLETE</h2>
+        </div>
         <h1 id="result-title" class="result-title"></h1>
         <div id="result-desc" class="result-desc"></div>
-        <button id="restart-btn" style="display:none; margin-top: 2rem;">[ REBOOT SYSTEM ]</button>
+        
+        <!-- Ad Slot: Result Page (High Visibility) -->
+        <div class="ad-container" id="ad-result-bottom">
+            [SPONSOR_SLOT_01]
+        </div>
+
+        <div class="action-buttons" style="display:flex; flex-wrap:wrap; justify-content:center; gap: 1rem; margin-top: 2rem;">
+            <button id="download-btn">[ DOWNLOAD ID CARD ]</button>
+            <button id="share-x-btn" style="display:none;">[ POST TO X ]</button>
+            <button id="share-fb-btn" style="display:none;">[ SHARE FB ]</button>
+            <button id="restart-btn" style="display:none;">[ REBOOT SYSTEM ]</button>
+            <button id="bmc-btn" style="display:none; color: var(--color-accent); border-color: var(--color-accent);">[ BUY ME A COFFEE ]</button>
+        </div>
+
+        <div class="suggestions-section" style="margin-top: 3rem; border-top: 1px solid #008f11; padding-top: 1rem;">
+            <div class="terminal-text" style="color: #008f11; margin-bottom: 1rem;">OTHER AVAILABLE PROTOCOLS:</div>
+            <div id="suggestions-grid" class="options-grid" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));"></div>
+        </div>
       </div>
     `;
 
@@ -123,12 +156,105 @@ export class ScreenManager {
       () => this.playTypeSound(),
     );
 
+    // Suggestions Logic
+    const suggestionsGrid = this.app.querySelector("#suggestions-grid");
+    const currentThemeId =
+      window.location.pathname.replace(/^\/|\/$/g, "") || "core";
+    const others = allThemes
+      .filter((t) => t.id !== currentThemeId)
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 4);
+
+    others.forEach((t) => {
+      const card = document.createElement("div");
+      card.className = "suggestion-card";
+      card.innerHTML = `
+            <div class="card-header">
+                <h3>${t.title}</h3>
+                <span class="card-arrow">></span>
+            </div>
+            <p>${t.description}</p>
+        `;
+      card.addEventListener("click", () => {
+        this.playClickSound();
+        onSelectTheme(t);
+      });
+      card.addEventListener("mouseenter", () => this.playHoverSound());
+      suggestionsGrid.appendChild(card);
+    });
+
     const btn = this.app.querySelector("#restart-btn");
+    const xBtn = this.app.querySelector("#share-x-btn");
+    const fbBtn = this.app.querySelector("#share-fb-btn");
+    const dlBtn = this.app.querySelector("#download-btn");
+    const bmcBtn = this.app.querySelector("#bmc-btn");
+
+    [btn, xBtn, fbBtn, dlBtn, bmcBtn].forEach((b) =>
+      b.classList.add("btn-small"),
+    );
+
+    // Show buttons
     btn.style.display = "inline-block";
+    xBtn.style.display = "inline-block";
+    fbBtn.style.display = "inline-block";
+    bmcBtn.style.display = "inline-block";
+
+    // Download Logic
+    dlBtn.addEventListener("mouseenter", () => this.playHoverSound());
+    dlBtn.addEventListener("click", async () => {
+      this.playClickSound();
+      dlBtn.textContent = "[ GENERATING... ]";
+      try {
+        const dataUrl = await CertificateGenerator.generate(result, themeTitle);
+        const link = document.createElement("a");
+        link.download = `take9-identity-${Date.now()}.png`;
+        link.href = dataUrl;
+        link.click();
+        dlBtn.textContent = "[ DOWNLOAD ID CARD ]";
+      } catch (e) {
+        console.error(e);
+        dlBtn.textContent = "[ DATA CORRUPT ]";
+      }
+    });
+
+    // Restart Logic
     btn.addEventListener("mouseenter", () => this.playHoverSound());
     btn.addEventListener("click", () => {
       this.playClickSound();
       onRestart();
+    });
+
+    // Share Logic
+    const shareText = `I got: ${result.title} - ${result.description}\nDiscover your digital soul:`;
+    const shareUrl = "https://t9.samseen.dev/"; // Hardcoded production URL
+
+    // X (Twitter)
+    xBtn.addEventListener("mouseenter", () => this.playHoverSound());
+    xBtn.addEventListener("click", () => {
+      this.playClickSound();
+      const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
+      window.open(url, "_blank");
+    });
+
+    // Facebook
+    fbBtn.addEventListener("mouseenter", () => this.playHoverSound());
+    fbBtn.addEventListener("click", () => {
+      this.playClickSound();
+      const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+      window.open(url, "_blank");
+    });
+
+    const homeBtnRes = this.app.querySelector("#home-link-res");
+    homeBtnRes.addEventListener("click", () => {
+      this.playClickSound();
+      window.location.href = "/";
+    });
+
+    // BMC Logic
+    bmcBtn.addEventListener("mouseenter", () => this.playHoverSound());
+    bmcBtn.addEventListener("click", () => {
+      this.playClickSound();
+      window.open("https://buymeacoffee.com/samseen", "_blank");
     });
   }
 }

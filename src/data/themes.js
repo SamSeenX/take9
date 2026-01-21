@@ -56,4 +56,40 @@ export const themes = [
     description: "Sights, Sounds, and Formats.",
     loader: () => import("./themes/era.js"),
   },
+  {
+    id: "lotr",
+    title: "THE FELLOWSHIP",
+    description: "Rings, Shadows, and Light.",
+    loader: () => import("./themes/lotr.js"),
+  },
+  {
+    id: "bttf",
+    title: "THE TIMELINE",
+    description: "Causality, Time, and Legacy.",
+    loader: () => import("./themes/bttf.js"),
+  },
+  {
+    id: "matrix",
+    title: "THE SIMULATION",
+    description: "Reality, Truth, and Control.",
+    loader: () => import("./themes/matrix.js"),
+  },
+  {
+    id: "ghostbusters",
+    title: "THE SPECTER",
+    description: "Science, Belief, and Ectoplasm.",
+    loader: () => import("./themes/ghostbusters.js"),
+  },
+  {
+    id: "galaxy_quest",
+    title: "THE STARSHIP",
+    description: "A Meta-Narrative of Heroes.",
+    loader: () => import("./themes/galaxy_quest.js"),
+  },
+  {
+    id: "mcu",
+    title: "THE ASSEMBLY",
+    description: "Power, Sacrifice, and Teamwork.",
+    loader: () => import("./themes/mcu.js"),
+  },
 ];
