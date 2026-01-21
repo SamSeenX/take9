@@ -45,6 +45,14 @@ const initApp = () => {
   }
 };
 
+const handleGoHome = () => {
+  if (window.location.pathname !== "/") {
+    window.history.pushState({}, "", "/");
+  }
+  updateMetadata(null);
+  ui.showStart(themes, handleThemeSelect);
+};
+
 const handleThemeSelect = async (theme) => {
   // Ensure Audio Context is resumed (first interaction usually)
   if (soundManager.ctx.state === "suspended") {
@@ -69,7 +77,13 @@ const handleThemeSelect = async (theme) => {
 
     // Init Game with chosen theme data
     const firstQuestion = game.init(themeData, theme.title);
-    ui.showQuestion(firstQuestion, game.currentStep, themes, handleAnswer);
+    ui.showQuestion(
+      firstQuestion,
+      game.currentStep,
+      themes,
+      handleAnswer,
+      handleGoHome,
+    );
   } catch (error) {
     console.error("Failed to load theme:", error);
     // Could show error screen here
@@ -88,9 +102,16 @@ const handleAnswer = (index) => {
       themes,
       handleThemeSelect,
       initApp,
+      handleGoHome,
     );
   } else {
-    ui.showQuestion(result.question, game.currentStep, themes, handleAnswer);
+    ui.showQuestion(
+      result.question,
+      game.currentStep,
+      themes,
+      handleAnswer,
+      handleGoHome,
+    );
   }
 };
 

@@ -99,7 +99,7 @@ export class ScreenManager {
     }, 100);
   }
 
-  async showQuestion(questionData, step, themes, onAnswer) {
+  async showQuestion(questionData, step, themes, onAnswer, onHome) {
     this.app.innerHTML = `
       <div class="screen game-screen">
         <div class="header-nav">
@@ -142,7 +142,7 @@ export class ScreenManager {
     const homeBtn = this.app.querySelector("#home-link");
     homeBtn.addEventListener("click", () => {
       this.playClickSound();
-      window.location.href = "/";
+      if (onHome) onHome();
     });
 
     // Set theme context if available
@@ -154,16 +154,16 @@ export class ScreenManager {
       this.app.querySelector("#theme-display-desc").textContent =
         currentTheme.description;
     }
-
-    // Inject live ad
-    this.injectAd(this.app.querySelector("#ad-question-bottom"));
   }
 
-    // Inject live ad
-    this.injectAd(this.app.querySelector("#ad-question-bottom"));
-  }
-
-  async showResult(result, themeTitle, allThemes, onSelectTheme, onRestart) {
+  async showResult(
+    result,
+    themeTitle,
+    allThemes,
+    onSelectTheme,
+    onRestart,
+    onHome,
+  ) {
     this.app.innerHTML = `
       <div class="screen result-screen">
         <div class="header-nav" style="width: 100%;">
@@ -300,7 +300,7 @@ export class ScreenManager {
     const homeBtnRes = this.app.querySelector("#home-link-res");
     homeBtnRes.addEventListener("click", () => {
       this.playClickSound();
-      window.location.href = "/";
+      if (onHome) onHome();
     });
 
     // BMC Logic
